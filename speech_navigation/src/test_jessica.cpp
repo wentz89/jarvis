@@ -1,12 +1,18 @@
 #include "ros/ros.h"
 #include "std_msgs/String.h"
+#include "geometry_msgs/Twist.h"
+
+ros::NodeHandle n;
+ros::Publisher direction_pub =  n.advertise<geometry_msgs::Twist>("/gazebo/cmd_vel", 10);
+String com;
 
 /**
  * This tutorial demonstrates simple receipt of messages over the ROS system.
  */
 void chatterCallback(const std_msgs::String::ConstPtr& msg)
 {
-  ROS_INFO("I heard: [%s]", msg->data.c_str());
+  com=msg->data.c_str();
+  ROS_INFO("I heard: [%s]",com);
 }
 
 int main(int argc, char **argv)
@@ -28,7 +34,7 @@ int main(int argc, char **argv)
    * The first NodeHandle constructed will fully initialize this node, and the last
    * NodeHandle destructed will close down the node.
    */
-  ros::NodeHandle n;
+
 
   /**
    * The subscribe() call is how you tell ROS that you want to receive messages
@@ -45,9 +51,39 @@ int main(int argc, char **argv)
    * is the number of messages that will be buffered up before beginning to throw
    * away the oldest ones.
    */
-  ros::Subscriber sub = n.subscribe("chatter", 1000, chatterCallback);
+  ros::Subscriber sub = n.subscribe("command", 1000, chatterCallback);
+
+  if (com=="forward") {
+      geometry_msgs::Twist geom;
+      geom.linear.x=5;
+      direction_pub.publish(geom);
+  }
+  else if (com=="back"){
+      geometry_msgs::Twist geom;
+      geom.linear.x=-5;
+      direction_pub.publish(geom);
+  }
+  else if (comm=="left"){
+      geometry_msgs::Twist geom;
+      geom.linear.y=-5;
+      direction_pub.publish(geom);
+  }
+  else if (comm=="right"){
+      geometry_msgs::Twist geom;
+      geom.linear.y=5;
+      direction_pub.publish(geom);
+  }
+  else if (com=="turn"){
+      geometry_msgs::Twist geom;
+      geom.angular.z=5;
+      direction_pub.publish(geom);
+  }
+
+  else if (comm=="hold"){
+  }
 
   /**
+   * commands: start, back, hold, left, right, turn
    * ros::spin() will enter a loop, pumping callbacks.  With this version, all
    * callbacks will be called from within this thread (the main one).  ros::spin()
    * will exit when Ctrl-C is pressed, or the node is shutdown by the master.
