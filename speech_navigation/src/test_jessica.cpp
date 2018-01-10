@@ -4,7 +4,7 @@
 
 ros::NodeHandle n;
 ros::Publisher direction_pub =  n.advertise<geometry_msgs::Twist>("/gazebo/cmd_vel", 10);
-String com;
+std::string com;
 
 /**
  * This tutorial demonstrates simple receipt of messages over the ROS system.
@@ -12,7 +12,7 @@ String com;
 void chatterCallback(const std_msgs::String::ConstPtr& msg)
 {
   com=msg->data.c_str();
-  ROS_INFO("I heard: [%s]",com);
+  ROS_INFO("I heard: [%s]",com.c_str());
 }
 
 int main(int argc, char **argv)
@@ -63,12 +63,12 @@ int main(int argc, char **argv)
       geom.linear.x=-5;
       direction_pub.publish(geom);
   }
-  else if (comm=="left"){
+  else if (com=="left"){
       geometry_msgs::Twist geom;
       geom.linear.y=-5;
       direction_pub.publish(geom);
   }
-  else if (comm=="right"){
+  else if (com=="right"){
       geometry_msgs::Twist geom;
       geom.linear.y=5;
       direction_pub.publish(geom);
@@ -79,7 +79,7 @@ int main(int argc, char **argv)
       direction_pub.publish(geom);
   }
 
-  else if (comm=="hold"){
+  else if (com=="hold"){
   }
 
   /**
