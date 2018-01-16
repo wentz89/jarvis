@@ -12,7 +12,35 @@ std::string com;
 void chatterCallback(const std_msgs::String::ConstPtr& msg)
 {
   com=msg->data.c_str();
-  ROS_INFO("I heard: [%s]",com.c_str());
+
+  if (com=="forward") {
+      geometry_msgs::Twist geom;
+      geom.linear.x=5;
+      direction_pub.publish(geom);
+  }
+  else if (com=="back"){
+      geometry_msgs::Twist geom;
+      geom.linear.x=-5;
+      direction_pub.publish(geom);
+  }
+  else if (com=="left"){
+      geometry_msgs::Twist geom;
+      geom.linear.y=-5;
+      direction_pub.publish(geom);
+  }
+  else if (com=="right"){
+      geometry_msgs::Twist geom;
+      geom.linear.y=5;
+      direction_pub.publish(geom);
+  }
+  else if (com=="turn"){
+      geometry_msgs::Twist geom;
+      geom.angular.z=5;
+      direction_pub.publish(geom);
+  }
+
+  else if (com=="hold"){
+  }
 }
 
 int main(int argc, char **argv)
@@ -53,34 +81,7 @@ int main(int argc, char **argv)
    */
   ros::Subscriber sub = n.subscribe("command", 1000, chatterCallback);
 
-  if (com=="forward") {
-      geometry_msgs::Twist geom;
-      geom.linear.x=5;
-      direction_pub.publish(geom);
-  }
-  else if (com=="back"){
-      geometry_msgs::Twist geom;
-      geom.linear.x=-5;
-      direction_pub.publish(geom);
-  }
-  else if (com=="left"){
-      geometry_msgs::Twist geom;
-      geom.linear.y=-5;
-      direction_pub.publish(geom);
-  }
-  else if (com=="right"){
-      geometry_msgs::Twist geom;
-      geom.linear.y=5;
-      direction_pub.publish(geom);
-  }
-  else if (com=="turn"){
-      geometry_msgs::Twist geom;
-      geom.angular.z=5;
-      direction_pub.publish(geom);
-  }
 
-  else if (com=="hold"){
-  }
 
   /**
    * commands: start, back, hold, left, right, turn
