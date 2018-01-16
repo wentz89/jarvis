@@ -2,8 +2,8 @@
 #include "std_msgs/String.h"
 #include "geometry_msgs/Twist.h"
 
-ros::NodeHandle n;
-ros::Publisher direction_pub =  n.advertise<geometry_msgs::Twist>("/gazebo/cmd_vel", 10);
+
+
 std::string com;
 
 /**
@@ -11,8 +11,43 @@ std::string com;
  */
 void chatterCallback(const std_msgs::String::ConstPtr& msg)
 {
+  ros::NodeHandle n;
+  ros::Publisher direction_pub =n.advertise<geometry_msgs::Twist>("/cmd_vel", 10);
   com=msg->data.c_str();
-  ROS_INFO("I heard: [%s]",com.c_str());
+  if (com=="forward") {
+      ROS_INFO("In forward mode");
+      geometry_msgs::Twist geom;
+      geom.linear.x=0.5;
+      geom.linear.y=0.0;
+      geom.linear.z=0.0;
+      geom.angular.x=0.0;
+      geom.angular.y=0.0;
+      geom.angular.z=0.0;
+      direction_pub.publish(geom);
+  }
+  else if (com=="back"){
+      geometry_msgs::Twist geom;
+      geom.linear.x=-5.0;
+      direction_pub.publish(geom);
+  }
+  else if (com=="left"){
+      geometry_msgs::Twist geom;
+      geom.linear.y=-5.0;
+      direction_pub.publish(geom);
+  }
+  else if (com=="right"){
+      geometry_msgs::Twist geom;
+      geom.linear.y=5.0;
+      direction_pub.publish(geom);
+  }
+  else if (com=="turn"){
+      geometry_msgs::Twist geom;
+      geom.angular.z=5.0;
+      direction_pub.publish(geom);
+  }
+
+  else if (com=="hold"){
+  }
 }
 
 int main(int argc, char **argv)
@@ -28,7 +63,7 @@ int main(int argc, char **argv)
    * part of the ROS system.
    */
   ros::init(argc, argv, "listener");
-
+  ros::NodeHandle n;
   /**
    * NodeHandle is the main access point to communications with the ROS system.
    * The first NodeHandle constructed will fully initialize this node, and the last
@@ -53,35 +88,6 @@ int main(int argc, char **argv)
    */
   ros::Subscriber sub = n.subscribe("command", 1000, chatterCallback);
 
-  if (com=="forward") {
-      geometry_msgs::Twist geom;
-      geom.linear.x=5;
-      direction_pub.publish(geom);
-  }
-  else if (com=="back"){
-      geometry_msgs::Twist geom;
-      geom.linear.x=-5;
-      direction_pub.publish(geom);
-  }
-  else if (com=="left"){
-      geometry_msgs::Twist geom;
-      geom.linear.y=-5;
-      direction_pub.publish(geom);
-  }
-  else if (com=="right"){
-      geometry_msgs::Twist geom;
-      geom.linear.y=5;
-      direction_pub.publish(geom);
-  }
-  else if (com=="turn"){
-      geometry_msgs::Twist geom;
-      geom.angular.z=5;
-      direction_pub.publish(geom);
-  }
-
-  else if (com=="hold"){
-  }
-
   /**
    * commands: start, back, hold, left, right, turn
    * ros::spin() will enter a loop, pumping callbacks.  With this version, all
@@ -92,3 +98,4 @@ int main(int argc, char **argv)
 
   return 0;
 }
+

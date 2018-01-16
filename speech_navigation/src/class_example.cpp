@@ -16,7 +16,7 @@ ClassTemplate::ClassTemplate(ros::NodeHandle &nh):n_(&nh)
 
     //Subscriber
     ROS_INFO("ClassTemplate loading Subscriber");
-    sub_ = n_->subscribe<std_msgs::Float32>("/command",10, &ClassTemplate::SubCallback, this);
+    sub_ = n_->subscribe<std_msgs::Float32>("/info_topic",10, &ClassTemplate::SubCallback, this);
 
     //ServiceServer
     ROS_INFO("ClassTemplate loading service");
@@ -27,6 +27,9 @@ ClassTemplate::ClassTemplate(ros::NodeHandle &nh):n_(&nh)
     ROS_INFO("ClassTemplate loading timer");
     timer_ = n_->createTimer(ros::Duration(2.0), &ClassTemplate::timerCallback, this);
     // triggert je 2 sekunden
+    
+    // service client
+    //client_ = n->serviceClient<std_srvs::Empty>("/any_service");
     
     // other Stuff
     info_num_ = 0.0;
