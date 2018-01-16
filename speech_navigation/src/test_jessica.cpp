@@ -14,6 +14,7 @@ void chatterCallback(const std_msgs::String::ConstPtr& msg)
   ros::NodeHandle n;
   ros::Publisher direction_pub =n.advertise<geometry_msgs::Twist>("/cmd_vel", 10);
   com=msg->data.c_str();
+
   if (com=="forward") {
       ROS_INFO("In forward mode");
       geometry_msgs::Twist geom;
@@ -27,22 +28,25 @@ void chatterCallback(const std_msgs::String::ConstPtr& msg)
   }
   else if (com=="back"){
       geometry_msgs::Twist geom;
-      geom.linear.x=-5.0;
+      geom.linear.x=-5;
       direction_pub.publish(geom);
   }
   else if (com=="left"){
       geometry_msgs::Twist geom;
-      geom.linear.y=-5.0;
+
+      geom.linear.y=-5;
+
       direction_pub.publish(geom);
   }
   else if (com=="right"){
       geometry_msgs::Twist geom;
       geom.linear.y=5.0;
+
       direction_pub.publish(geom);
   }
   else if (com=="turn"){
       geometry_msgs::Twist geom;
-      geom.angular.z=5.0;
+      geom.angular.z=5;
       direction_pub.publish(geom);
   }
 
@@ -87,6 +91,7 @@ int main(int argc, char **argv)
    * away the oldest ones.
    */
   ros::Subscriber sub = n.subscribe("command", 1000, chatterCallback);
+
 
   /**
    * commands: start, back, hold, left, right, turn
