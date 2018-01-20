@@ -19,7 +19,7 @@ class Voice_Controller_EDS:
         rospy.init_node('voice_controller_eds')
         rospy.on_shutdown(self.shutdown)
 
-        event_topic = 'robot_0/PNPConditionEvent'
+        event_topic = '/command'
 
         self.pub_ = rospy.Publisher(event_topic, String, queue_size=10)
 
@@ -30,7 +30,7 @@ class Voice_Controller_EDS:
         #config.set_string('-lm', path.join(MODELDIR, 'en-us/en-us.lm.bin'))
         config.set_string('-lm', '/usr/local/share/pocketsphinx/model/en-us/en-us.lm.bin')
         #config.set_string('-dict', path.join(MODELDIR, 'en-us/cmudict-en-us.dict'))
-        config.set_string('-dict', '/home/alex/wentz_catkin_ws/src/pnp_ros_licht/model/light.dict')
+        config.set_string('-dict', '/home/alex/wentz_catkin_ws/src/jarvis/speech_recognition/model/model.dict')
 
         config.set_string('-logfn', '/dev/null')
         # Decode streaming data.
@@ -86,20 +86,20 @@ class Voice_Controller_EDS:
             if word !='</s>':
                 print ( word)
 
-                if word =="on":
-                   self.pub_.publish("lichtAn")
+                if word =="back":
+                   self.pub_.publish("back")
 
-                elif word =="off":
-                    self.pub_.publish("lichtAus")
+                elif word =="forward":
+                    self.pub_.publish("forward")
 
-                elif word =="disco":
-                    self.pub_.publish("disco")
+                elif word =="left":
+                    self.pub_.publish("left")
 
-                elif word =="first":
-                    self.pub_.publish("nachG")
+                elif word =="right":
+                    self.pub_.publish("right")
 
-                elif word =="second":
-                    self.pub_.publish("nachS")
+                elif word =="stop":
+                    self.pub_.publish("stop")
 
             self.decoder.end_utt()
             self.decoder.start_utt()
@@ -109,7 +109,7 @@ class Voice_Controller_EDS:
         command executed after Ctrl+C is pressed
         """
         rospy.loginfo("Stop voice command")
-        self.pub_.publish(Twist())
+        ##self.pub_.publish(Twist())
         rospy.sleep(1)
 
 if __name__ == '__main__':

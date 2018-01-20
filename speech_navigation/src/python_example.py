@@ -24,9 +24,18 @@ class PythonExample:
         geom.angular.z = 0.0
         if self.command_recived:
             if self.command == "forward":
-                geom.linear.x = 0.5
+                geom.linear.x = 0.2
             elif self.command == "back":
-                geom.linear.x = -0.5
+                geom.linear.x = -0.2
+            elif self.command = "stop":
+                pass
+            elif self.command = "left":
+                geom.angular.z = -0.5
+            elif self.command = "right":
+                geom.angular.z = 0.5
+            else:
+                pass
+            self.pub.publish(geom)
 
     def run(self,rate):
         rate.sleep()
