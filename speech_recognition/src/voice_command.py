@@ -104,6 +104,15 @@ class Voice_Controller_EDS:
                 elif word =="turn":
                     self.pub_.publish("turn")
 
+                elif word =="lock":
+                    self.pub_.publish("lock")
+
+                elif word =="unlock":
+                    self.pub_.publish("unlock")
+
+                elif word =="jarvis":
+                    self.pub_.publish("jarvis")
+
             self.decoder.end_utt()
             self.decoder.start_utt()
 

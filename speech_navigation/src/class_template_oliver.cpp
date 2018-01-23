@@ -13,7 +13,8 @@ ClassTemplate::ClassTemplate(ros::NodeHandle &nh):n_(&nh)
     ROS_INFO("ClassTemplate loading Publisher");
 
     //Publisher
-    pub_ = n_->advertise<geometry_msgs::Twist>("gazebo/cmd_vel", 1);
+    pub_ = n_->advertise<geometry_msgs::Twist>("/gazebo/cmd_vel", 1);
+    pub2_ = n_->advertise<geometry_msgs::Twist>("/cmd_vel", 1);
 
     //Subscriber
     ROS_INFO("ClassTemplate loading Subscriber");
@@ -49,23 +50,52 @@ bool ClassTemplate::ServiceCallback(std_srvs::Empty::Request &req, std_srvs::Emp
 void ClassTemplate::SubCallback(std_msgs::String datas)
 {
     geometry_msgs::Twist new_msg;
+    if (datas.data=="stop")
+    {
+        new_msg.linear.x=0;
+        new_msg.linear.y=0;
+        new_msg.linear.z=0;
+        new_msg.angular.x=0;
+        new_msg.angular.y=0;
+        new_msg.angular.z=0;
+        level=lock;
+    }
+    if (datas.data=="jarvis")
+    {
+        level=0;
+    }
+    if (datas.data=="unlock")
+    {
+        lock=0;
+        level=lock;
+    }
+    if (datas.data=="lock")
+    {
+        lock=999;
+        level=lock;
+    }
+
     if (level==0)
     {
         if (datas.data=="right")
         {
            new_msg.linear.y=0.2;
+           level=lock;
         }
         if (datas.data=="left")
         {
            new_msg.linear.y=-0.2;
+           level=lock;
         }
         if (datas.data=="forward")
         {
            new_msg.linear.x=0.2;
+           level=lock;
         }
         if (datas.data=="back")
         {
            new_msg.linear.x=-0.2;
+           level=lock;
         }
         if (datas.data=="turn")
         {
@@ -74,40 +104,23 @@ void ClassTemplate::SubCallback(std_msgs::String datas)
             new_msg.linear.z=0;
             level=1;
         }
-        if (datas.data=="stop")
-        {
-            new_msg.linear.x=0;
-            new_msg.linear.y=0;
-            new_msg.linear.z=0;
-            new_msg.angular.x=0;
-            new_msg.angular.y=0;
-            new_msg.angular.z=0;
-        }
+
     }
     if (level==1)
     {
         if (datas.data=="left")
         {
             new_msg.angular.z=1;
-            level=0;
+            level=lock;
         }
         if (datas.data=="right")
         {
             new_msg.angular.z=-1;
-            level=0;
-        }
-        if (datas.data=="stop")
-        {
-            new_msg.linear.x=0;
-            new_msg.linear.y=0;
-            new_msg.linear.z=0;
-            new_msg.angular.x=0;
-            new_msg.angular.y=0;
-            new_msg.angular.z=0;
-            level=0;
+            level=lock;
         }
     }
     pub_.publish(new_msg);
+    pub2_.publish(new_msg);
     ROS_INFO("Got Info: %s",datas.data.c_str());
 }
 

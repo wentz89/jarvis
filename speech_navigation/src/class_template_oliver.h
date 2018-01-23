@@ -35,10 +35,12 @@
       
       //Class Variables
       bool                                  enabled_;
-      int				    level;
+      int				    level=999;
+      int				    lock=999;
 
       //ROS Stuff
       ros::NodeHandle                       *n_;
+      ros::Publisher                        pub2_;
       ros::Publisher                        pub_;
       ros::ServiceServer                    service_;
       ros::Subscriber                       sub_;
