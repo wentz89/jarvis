@@ -30,7 +30,7 @@ class Voice_Controller_EDS:
         #config.set_string('-lm', path.join(MODELDIR, 'en-us/en-us.lm.bin'))
         config.set_string('-lm', '/usr/local/share/pocketsphinx/model/en-us/en-us.lm.bin')
         #config.set_string('-dict', path.join(MODELDIR, 'en-us/cmudict-en-us.dict'))
-        config.set_string('-dict', '/home/alex/wentz_catkin_ws/src/jarvis/speech_recognition/model/model.dict')
+        config.set_string('-dict', '/home/kinetic/catkin_ws/src/jarvis/speech_recognition/model/model.dict')
 
         config.set_string('-logfn', '/dev/null')
         # Decode streaming data.
@@ -49,7 +49,7 @@ class Voice_Controller_EDS:
         if(bUseMic):
 
             p = pyaudio.PyAudio()
-            self.stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input_device_index=7, input=True, frames_per_buffer=fpb)
+            self.stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input_device_index=10, input=True, frames_per_buffer=fpb)
 
         #load recorded file
         else:
@@ -100,6 +100,9 @@ class Voice_Controller_EDS:
 
                 elif word =="stop":
                     self.pub_.publish("stop")
+
+                elif word =="turn":
+                    self.pub_.publish("turn")
 
             self.decoder.end_utt()
             self.decoder.start_utt()
