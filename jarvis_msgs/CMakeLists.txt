@@ -10,6 +10,7 @@ project(jarvis_msgs)
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   std_msgs
+  message_generation
 )
 
 add_message_files(

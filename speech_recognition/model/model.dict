@@ -26,7 +26,8 @@ pickup P IH2 K AH1 P
 putdown P UH1 T D AW2 N
 drive D R AY1 V
 yes Y EH1 S
-one
+no N OW1
+one 
 two
 three
 ...
