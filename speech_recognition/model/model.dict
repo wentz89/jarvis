@@ -8,8 +8,34 @@ jarvis JH AA R V AH S
 jarvis JH AA R V IH S
 unlock AH N L AA K
 lock L AA K
+navigation N AE1 V AH0 G EY1 SH AH0 N
+navigation(2) N AE2 V AH0 G EY1 SH AH0 N
+navigate N AE1 V AH0 G EY2 T
+workstation W ER1 K S T EY2 SH AH0 N
+work W ER1 K
+station S T EY2 SH AH0 N
+waypoint W EY2 P OY1 N T
+way W EY2
+point P OY1 N T
+mapping M AE1 P IH0 NG
+start S T AA1 R T
+save S EY1 V
+location L OW0 K EY1 SH AH0 N
+pickup P IH0 K AH1 P
+pickup P IH2 K AH1 P
+putdown P UH1 T D AW2 N
+drive D R AY1 V
+yes Y EH1 S
+one
+two
+three
+...
 
-fly F L AY
-hand HH AE N D
-fight F AY T
-robot R OW B AA T
+M20
+M30
+axis 
+s20 
+...
+
+yes 
+no 
