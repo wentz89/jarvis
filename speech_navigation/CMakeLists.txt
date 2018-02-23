@@ -18,6 +18,7 @@ find_package(catkin REQUIRED COMPONENTS
   jarvis_msgs
   tf
   roslib
+  jarvis_msgs
 )
 
 ## System dependencies are found with CMake's conventions
