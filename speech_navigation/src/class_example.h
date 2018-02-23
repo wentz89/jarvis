@@ -6,7 +6,8 @@
 // ros messages stuff
 #include <std_msgs/Float32.h>
 #include <std_srvs/Empty.h>
-#include "geometry_msgs/Twist.h"
+#include <std_msgs/String.h>
+#include <geometry_msgs/Twist.h>
 
 // dynamic reconfigure stuff
 //#include <dynamic_reconfigure/server.h>
@@ -26,18 +27,18 @@
 
       // public Functions for callbacks
       bool ServiceCallback(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res);
-      void SubCallback(std_msgs::Float32 datas);
+      void SubCallback(std_msgs::String datas);
       void timerCallback(const ros::TimerEvent& e);
 
     private:
       //private Functions
       void addOne(float num);
-      String com;
       
       
       //Class Variables
       float                                 info_num_;
       bool                                  enabled_;
+      std::string                           command_;
 
       //ROS Stuff
       ros::NodeHandle                       *n_;
@@ -45,6 +46,7 @@
       ros::ServiceServer                    service_;
       ros::Subscriber                       sub_;
       ros::Timer                            timer_;
+      ros::ServiceClient                    client_;
       
   };// Class End
 #endif
