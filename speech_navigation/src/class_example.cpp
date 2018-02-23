@@ -1,7 +1,8 @@
 //#include "ros/ros.h"
-#include "class_template.h"
+#include "class_example.h"
 #include <ros/ros.h>
-
+#include <std_msgs/String.h>
+#include <geometry_msgs/Twist.h>
 //Deconstructor
 ClassTemplate::~ClassTemplate()
 {
@@ -12,11 +13,11 @@ ClassTemplate::ClassTemplate(ros::NodeHandle &nh):n_(&nh)
     ROS_INFO("ClassTemplate loading Publisher");
 
     //Publisher
-    pub_ = n_->advertise<std_msgs::Float32>("/info_topic", 1);//std_msgs/Float32.h in header included
+    pub_ = n_->advertise<geometry_msgs::Twist>("/cmd_vel", 1);//std_msgs/Float32.h in header included
 
     //Subscriber
     ROS_INFO("ClassTemplate loading Subscriber");
-    sub_ = n_->subscribe<std_msgs::Float32>("/info_topic",10, &ClassTemplate::SubCallback, this);
+    sub_ = n_->subscribe<std_msgs::String>("/command",10, &ClassTemplate::SubCallback, this);
 
     //ServiceServer
     ROS_INFO("ClassTemplate loading service");
@@ -25,7 +26,7 @@ ClassTemplate::ClassTemplate(ros::NodeHandle &nh):n_(&nh)
 
     //Timer
     ROS_INFO("ClassTemplate loading timer");
-    timer_ = n_->createTimer(ros::Duration(2.0), &ClassTemplate::timerCallback, this);
+    timer_ = n_->createTimer(ros::Duration(0.1), &ClassTemplate::timerCallback, this);
     // triggert je 2 sekunden
     
     // service client
@@ -33,14 +34,41 @@ ClassTemplate::ClassTemplate(ros::NodeHandle &nh):n_(&nh)
     
     // other Stuff
     info_num_ = 0.0;
+    enabled_ = false;
     // ...
     ROS_INFO("ClassTemplate loaded");
 }
 
 void ClassTemplate::timerCallback(const ros::TimerEvent& e)
 {
-    ROS_INFO("Current Info Number: %f",info_num_);
-    enabled_ = false;
+    //ROS_INFO("Current Info Number: %f",info_num_);
+    //enabled_ = false;
+    if(enabled_)
+    {
+        geometry_msgs::Twist twist;
+        twist.linear.x = 0.0;
+        twist.linear.y = 0.0;
+        twist.linear.z = 0.0;
+        twist.linear.x = 0.0;
+        twist.linear.y = 0.0;
+        twist.linear.z = 0.0;
+        if(command_ == "forward")
+        {
+            twist.linear.x = 0.5;
+        }
+        else if(command_ == "back")
+        {
+            twist.linear.x = -0.5;
+        }
+        else if(command_ == "hold")
+        {
+            twist.linear.x = 0.0;
+            twist.linear.y = 0.0;
+            twist.angular.z = 0.0;
+        }
+        
+        pub_.publish(twist);
+    }
 }
 
 bool ClassTemplate::ServiceCallback(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res)
@@ -53,10 +81,12 @@ bool ClassTemplate::ServiceCallback(std_srvs::Empty::Request &req, std_srvs::Emp
     return true;
 }
 
-void ClassTemplate::SubCallback(std_msgs::Float32 datas)
+void ClassTemplate::SubCallback(std_msgs::String datas)
 {
-    addOne(datas.data);
-    ROS_INFO("Got Info Number: %f",datas.data);
+    command_ = datas.data;
+    enabled_ = true;
+    //addOne(datas.data);
+    //ROS_INFO("Got Info Number: %f",datas.data);
 }
 
 void ClassTemplate::addOne(float num)
