@@ -1,9 +1,11 @@
 //#include "ros/ros.h"
-#include "class_template_gao.h"
+#include "class_template.h"
 #include <ros/ros.h>
-#include<std_msgs/String.h>
-#include<jarvis_msgs/command.msg>
+#include <std_msgs/String.h>
+#include<geometry_msgs/Twist.h>
+#include<std_msgs/Float32.h>
 
+float i=0;
 //Deconstructor
 ClassTemplate::~ClassTemplate()
 {
@@ -14,7 +16,8 @@ ClassTemplate::ClassTemplate(ros::NodeHandle &nh):n_(&nh)
     ROS_INFO("ClassTemplate loading Publisher");
 
     //Publisher
-    pub_ = n_->advertise<std_msgs::String>("/jarvis/command", 1);//std_msgs/Float32.h in header included
+    pub_ = n_->advertise<geometry_msgs::Twist>("/cmd_vel", 10);
+
 
     //Subscriber
     ROS_INFO("ClassTemplate loading Subscriber");
@@ -29,8 +32,8 @@ ClassTemplate::ClassTemplate(ros::NodeHandle &nh):n_(&nh)
     ROS_INFO("ClassTemplate loading timer");
     timer_ = n_->createTimer(ros::Duration(2.0), &ClassTemplate::timerCallback, this);
     // triggert je 2 sekunden
-    
-    // other tStuff
+
+    // other Stuff
     info_num_ = 0.0;
     // ...
     ROS_INFO("ClassTemplate loaded");
@@ -54,35 +57,50 @@ bool ClassTemplate::ServiceCallback(std_srvs::Empty::Request &req, std_srvs::Emp
 
 void ClassTemplate::SubCallback(std_msgs::String datas)
 {
-      jarvis_msgs::arguments argument;
-      jarvis_msgs::comannd_type type;
-      argument.arguments==datas.data;
-      flag=false;
-     if(argument.arguments="jarvis"){
-        
-         ClassTemplate.timer_=n_->createTimer(ros::Duration(4), SubCallback);
-         if(argument.arguments=="forward"){
-            argument.arguments="jarvis_forward";
-         }
-         if(arguments.arguments=="left"&flag=false){
-         argument.arguments="jarvis_left";
-         }
-         if(argument.arguments=="right"&flag=false){
-         argument.arguments="jarvis_left";
-         }
-         if(argument.arguments=="turn"&flag=false){
-             flag=true;
-            if(argument.arguments="left"){
-                argument.arguments="jarvis_turn_left";
-                }
-            if(argument.arguments=="right"){
-               argument.arguments="jarvis_turn_right";
-               }
-         }
-     }
-   pub_1.publish(cmd);
-}
+    geometry_msgs::Twist msg_twist;
 
+    std_msgs::String com;
+    com=datas;
+
+    if(com.data=="forward"){
+        msg_twist.linear.x=0.2;
+        msg_twist.linear.y=0;
+        msg_twist.linear.z=0;
+        msg_twist.angular.x=0;
+        msg_twist.angular.y=0;
+        msg_twist.angular.z=0;
+        pub_.publish(msg_twist);
+                   }
+    if(com.data=="back"){
+        msg_twist.linear.x=-0.2;
+        msg_twist.linear.y=0;
+        msg_twist.linear.z=0;
+        msg_twist.angular.x=0;
+        msg_twist.angular.y=0;
+        msg_twist.angular.z=0;
+         pub_.publish(msg_twist);
+                   }
+    if(com.data=="right"){
+        msg_twist.linear.x=0.2;
+        msg_twist.linear.y=0;
+        msg_twist.linear.z=0;
+        msg_twist.angular.x=0;
+        msg_twist.angular.y=0;
+        msg_twist.angular.z=-0.2;
+         pub_.publish(msg_twist);
+                   }
+    if(com.data=="left"){
+        msg_twist.linear.x=0.2;
+        msg_twist.linear.y=0;
+        msg_twist.linear.z=0;
+        msg_twist.angular.x=0;
+        msg_twist.angular.y=0;
+        msg_twist.angular.z=0.2;
+         pub_.publish(msg_twist);
+                   }
+}
+   // addOne(datas.data);
+   // ROS_INFO("Got Info Number: %f",datas.data);
 
 
 void ClassTemplate::addOne(float num)
@@ -103,17 +121,16 @@ int main(int argc, char **argv) {
   ros::init(argc, argv, "ClassTemplate");
   ros::NodeHandle nh;
   ros::Rate loop_rate(10); // 10hz
-  
+
   while(ros::Time::isValid()==0)
   {
     ros::Duration(0.5).sleep();
     ROS_WARN("WAITING FOR TIME TO BECOME VALID");
   }
-  
+
   ClassTemplate m(nh);
-  flag=false;
-//  ClssTemplate m2(nh);
-  
+//  ClassTemplate m2(nh);
+
   while(ros::ok())
   {
     ros::spinOnce();
@@ -121,8 +138,7 @@ int main(int argc, char **argv) {
     // Alternative zu spinOnce und loop_rate.sleep
     // definiere eine "run()"-Funktion
     // m.run()
-  }
 
-
+}
   return 0;
 }
