@@ -18,7 +18,6 @@ find_package(catkin REQUIRED COMPONENTS
   jarvis_msgs
   tf
   roslib
-  jarvis_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -147,9 +146,9 @@ add_executable(oliver_node src/test_oliver.cpp)
 target_link_libraries(oliver_node ${catkin_LIBRARIES})
 add_dependencies(oliver_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-add_executable(class_template_node src/class_template.cpp src/class_template_gao.h)
-target_link_libraries(class_template_node ${catkin_LIBRARIES})
-add_dependencies(class_template_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#add_executable(class_template_node src/class_template.cpp src/class_template_gao.h)
+#target_link_libraries(class_template_node ${catkin_LIBRARIES})
+#add_dependencies(class_template_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 
 add_executable(class_example_node src/class_example.cpp src/class_example.h)
