@@ -12,34 +12,48 @@ class PythonExample:
         self.current_time = rospy.get_rostime()
         self.turn_recieved = False
         self.enable = False
+        self.locked = True
     
     def sub_callback(self, data):
         self.command = data.data
         self.command_recived = True
 
     def timer_callback(self, data):
-        if (rospy.get_rostime() - self.current_time >= rospy.Duration(4.0) and self.enable):
-            self.enable = False
-            print "too slow"
+        if self.locked or self.turn_recieved:
+            if (rospy.get_rostime() - self.current_time >= rospy.Duration(4.0) and self.enable):
+                self.enable = False
+                self.turn_recieved = False
+                print "too slow"
+        else: self.enable = True
+
         if self.command_recived:
+
             if self.command == "jarvis":
                 self.enable = True
                 self.current_time = rospy.get_rostime()
+
             if self.enable:
+                if self.command == "unlock":
+                    self.locked = False
+                elif self.command == "lock":
+                    self.locked = True
 
                 # === simple === #
-                simple_msg = Command()
-                simple_msg.command_type = 2
+            simple_msg = Command()
+            simple_msg.command_type = 2
+
+            if self.command == "stop":
+                simple_msg.arguments = ["stop"]
+                self.enable = False
                 
+            if self.enable:                
+
                 if not self.turn_recieved:
                     if self.command == "forward":
                         simple_msg.arguments = ["forward"]
                         self.enable = False
                     elif self.command == "back":
                         simple_msg.arguments = ["back"]
-                        self.enable = False
-                    elif self.command == "stop":
-                        simple_msg.arguments = ["stop"]
                         self.enable = False
                     elif self.command == "left":
                         simple_msg.arguments = ["left"]
@@ -60,13 +74,10 @@ class PythonExample:
                         simple_msg.arguments = ["turn","right"]
                         self.enable = False
                         self.turn_recieved = False
-                    elif self.command == "stop":
-                        simple_msg.arguments = ["turn","stop"]
-                        self.enable = False
-                        self.turn_recieved = False
 
                 if not self.enable:
-                    self.pub.publish(simple_msg)
+                    self.pub.publish(simple_msg)  #publish simple_msgs
+
         self.command_recived = False
 
     def run(self,rate):
