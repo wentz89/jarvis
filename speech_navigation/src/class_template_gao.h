@@ -36,6 +36,7 @@
       //Class Variables
       float                                 info_num_;
       bool                                  enabled_;
+      bool                                  flag;
 
       //ROS Stuff
       ros::NodeHandle                       *n_;

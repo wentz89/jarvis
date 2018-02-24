@@ -159,6 +159,10 @@ add_executable(class_template_oliver src/class_template_oliver.cpp src/class_tem
 target_link_libraries(class_template_oliver ${catkin_LIBRARIES})
 add_dependencies(class_template_oliver ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
+add_executable(class_template_gao src/class_template_gao.cpp src/class_template.h)
+target_link_libraries(class_template_gao ${catkin_LIBRARIES})
+add_dependencies(class_template_gao ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
 #add_executable(class_template_jessica src/class_template_jessica.cpp src/class_template_jessica.h)
 #target_link_libraries(class_template_jessica ${catkin_LIBRARIES})
 #add_dependencies(class_template_jessica ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})

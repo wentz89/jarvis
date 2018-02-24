@@ -1,11 +1,9 @@
 //#include "ros/ros.h"
-#include "class_template.h"
+#include "class_template_gao.h"
 #include <ros/ros.h>
-#include <std_msgs/String.h>
-#include<geometry_msgs/Twist.h>
-#include<std_msgs/Float32.h>
+#include<std_msgs/String.h>
+#include<jarvis_msgs/Command.msg>
 
-float i=0;
 //Deconstructor
 ClassTemplate::~ClassTemplate()
 {
@@ -16,8 +14,7 @@ ClassTemplate::ClassTemplate(ros::NodeHandle &nh):n_(&nh)
     ROS_INFO("ClassTemplate loading Publisher");
 
     //Publisher
-    pub_ = n_->advertise<geometry_msgs::Twist>("/cmd_vel", 10);
-
+    pub_ = n_->advertise<std_msgs::String>("/jarvis/command", 1);//std_msgs/Float32.h in header included
 
     //Subscriber
     ROS_INFO("ClassTemplate loading Subscriber");
@@ -32,8 +29,8 @@ ClassTemplate::ClassTemplate(ros::NodeHandle &nh):n_(&nh)
     ROS_INFO("ClassTemplate loading timer");
     timer_ = n_->createTimer(ros::Duration(2.0), &ClassTemplate::timerCallback, this);
     // triggert je 2 sekunden
-
-    // other Stuff
+    
+    // other tStuff
     info_num_ = 0.0;
     // ...
     ROS_INFO("ClassTemplate loaded");
@@ -41,8 +38,8 @@ ClassTemplate::ClassTemplate(ros::NodeHandle &nh):n_(&nh)
 
 void ClassTemplate::timerCallback(const ros::TimerEvent& e)
 {
-    ROS_INFO("Current Info Number: %f",info_num_);
-    enabled_ = false;
+    ROS_INFO("you are to slow");
+    flag= false;
 }
 
 bool ClassTemplate::ServiceCallback(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res)
@@ -57,50 +54,41 @@ bool ClassTemplate::ServiceCallback(std_srvs::Empty::Request &req, std_srvs::Emp
 
 void ClassTemplate::SubCallback(std_msgs::String datas)
 {
-    geometry_msgs::Twist msg_twist;
+      std_msgs::String argument;
+      argument=datas;
+      jarvis_msgs::comannd msg;
+      flag=false;
+      ClassTemplate.timer_=n_->createTimer(ros::Duration(4), timerCallback);
+     if(argument.data="jarvis"&flag=true){
+        
 
-    std_msgs::String com;
-    com=datas;
-
-    if(com.data=="forward"){
-        msg_twist.linear.x=0.2;
-        msg_twist.linear.y=0;
-        msg_twist.linear.z=0;
-        msg_twist.angular.x=0;
-        msg_twist.angular.y=0;
-        msg_twist.angular.z=0;
-        pub_.publish(msg_twist);
-                   }
-    if(com.data=="back"){
-        msg_twist.linear.x=-0.2;
-        msg_twist.linear.y=0;
-        msg_twist.linear.z=0;
-        msg_twist.angular.x=0;
-        msg_twist.angular.y=0;
-        msg_twist.angular.z=0;
-         pub_.publish(msg_twist);
-                   }
-    if(com.data=="right"){
-        msg_twist.linear.x=0.2;
-        msg_twist.linear.y=0;
-        msg_twist.linear.z=0;
-        msg_twist.angular.x=0;
-        msg_twist.angular.y=0;
-        msg_twist.angular.z=-0.2;
-         pub_.publish(msg_twist);
-                   }
-    if(com.data=="left"){
-        msg_twist.linear.x=0.2;
-        msg_twist.linear.y=0;
-        msg_twist.linear.z=0;
-        msg_twist.angular.x=0;
-        msg_twist.angular.y=0;
-        msg_twist.angular.z=0.2;
-         pub_.publish(msg_twist);
-                   }
+         if(argument.data=="forward"&flag=true){
+            msg.arguments="jarvis_forward";
+            msg.command_type=2;
+         }
+         if(argument.data=="left"&flag=true){
+            msg.arguments="jarvis_left";
+            msg.command_type=2;
+         }
+         if(argument.data=="right"&flag=true){
+            msg.arguments="jarvis_left";
+            msg.command_type=2;
+         }
+         if(argument.data=="turn"&flag=true){
+             flag=false;
+            if(argument.data="left"){
+                msg.arguments="jarvis_turn_left";
+                msg.command_type=2;
+                }
+            if(argument.data=="right"){
+                msg.arguments="jarvis_turn_right";
+                msg.command_type=2;
+               }
+         }
+     }
+   pub_1.publish(msg);
 }
-   // addOne(datas.data);
-   // ROS_INFO("Got Info Number: %f",datas.data);
+
 
 
 void ClassTemplate::addOne(float num)
@@ -121,16 +109,16 @@ int main(int argc, char **argv) {
   ros::init(argc, argv, "ClassTemplate");
   ros::NodeHandle nh;
   ros::Rate loop_rate(10); // 10hz
-
+  
   while(ros::Time::isValid()==0)
   {
     ros::Duration(0.5).sleep();
     ROS_WARN("WAITING FOR TIME TO BECOME VALID");
   }
-
+  
   ClassTemplate m(nh);
-//  ClassTemplate m2(nh);
-
+//  ClssTemplate m2(nh);
+  
   while(ros::ok())
   {
     ros::spinOnce();
@@ -138,7 +126,8 @@ int main(int argc, char **argv) {
     // Alternative zu spinOnce und loop_rate.sleep
     // definiere eine "run()"-Funktion
     // m.run()
+  }
 
-}
+
   return 0;
 }
