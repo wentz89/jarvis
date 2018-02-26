@@ -2,9 +2,8 @@
 #include "class_template_gao.h"
 #include <ros/ros.h>
 #include<std_msgs/String.h>
-#include<jarvis_msgs/Command.msg>
+#include<jarvis_msgs/Command.h>
 
-//Deconstructor
 ClassTemplate::~ClassTemplate()
 {
 }
@@ -14,7 +13,7 @@ ClassTemplate::ClassTemplate(ros::NodeHandle &nh):n_(&nh)
     ROS_INFO("ClassTemplate loading Publisher");
 
     //Publisher
-    pub_ = n_->advertise<std_msgs::String>("/jarvis/command", 1);//std_msgs/Float32.h in header included
+   pub_ = n_->advertise<std_msgs::String>("/jarvis/command", 1);//std_msgs/Float32.h in header included
 
     //Subscriber
     ROS_INFO("ClassTemplate loading Subscriber");
@@ -27,107 +26,119 @@ ClassTemplate::ClassTemplate(ros::NodeHandle &nh):n_(&nh)
 
     //Timer
     ROS_INFO("ClassTemplate loading timer");
-    timer_ = n_->createTimer(ros::Duration(2.0), &ClassTemplate::timerCallback, this);
+    timer_ = n_->createTimer(ros::Duration(0.1), &ClassTemplate::timerCallback, this);
     // triggert je 2 sekunden
-    
-    // other tStuff
+
+    // service client
+    //client_ = n->serviceClient<std_srvs::Empty>("/any_service");
+
+    // other Stuff
     info_num_ = 0.0;
+    enabled_ = false;
     // ...
     ROS_INFO("ClassTemplate loaded");
 }
 
 void ClassTemplate::timerCallback(const ros::TimerEvent& e)
 {
-    ROS_INFO("you are to slow");
-    flag= false;
+    //ROS_INFO("Current Info Number: %f",info_num_);
+    //enabled_ = false;
+    if(enabled_)
+    {
+        jarvis_msgs::Command msg;
+       ros::Duration four_secound(4.0);
+        if(four_secound){
+
+        }
+        if(command_=="jarvis"){
+
+
+                 if(command_ =="forward"){
+                    msg.arguments = "forward";
+                    msg.command_type=2;
+                 }
+                 if(command_ =="left"){
+                    enabled_ =false;
+                    msg.arguments="jarvis_left";
+                    msg.command_type=2;
+                 }
+                 if(command_ =="right"){
+                    enabled_ =false;
+                    msg.arguments="jarvis_left";
+                    msg.command_type=2;
+                 }
+                 if(command_ =="turn"){
+                    enabled_ =false;
+                    if(command_ =="left"){
+                        msg.arguments="jarvis_turn_left";
+                        msg.command_type=2;
+                        }
+                    if(command_ =="right"){
+                        msg.arguments="jarvis_turn_right";
+                        msg.command_type=2;
+                       }
+             }
+
+        pub_.publish(msg);
+    }
+}
 }
 
-bool ClassTemplate::ServiceCallback(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res)
-{
-    this->enabled_ = true;
-    std_msgs::Float32 data;
-    data.data = info_num_ + 1.0;
-    ROS_INFO("Publish Info Number: %f",data.data);
-    this->pub_.publish(data);
-    return true;
-}
+    bool ClassTemplate::ServiceCallback(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res)
+    {
+        this->enabled_ = true;
+        std_msgs::Float32 data;
+        data.data = info_num_ + 1.0;
+        ROS_INFO("Publish Info Number: %f",data.data);
+        this->pub_.publish(data);
+        return true;
+    }
 
-void ClassTemplate::SubCallback(std_msgs::String datas)
-{
-      std_msgs::String argument;
-      argument=datas;
-      jarvis_msgs::comannd msg;
-      flag=false;
-      ClassTemplate.timer_=n_->createTimer(ros::Duration(4), timerCallback);
-     if(argument.data="jarvis"&flag=true){
-        
+    void ClassTemplate::SubCallback(std_msgs::String datas)
+    {
+        command_ = datas.data;
+        enabled_ = true;
+        //addOne(datas.data);
+        //ROS_INFO("Got Info Number: %f",datas.data);
+    }
 
-         if(argument.data=="forward"&flag=true){
-            msg.arguments="jarvis_forward";
-            msg.command_type=2;
-         }
-         if(argument.data=="left"&flag=true){
-            msg.arguments="jarvis_left";
-            msg.command_type=2;
-         }
-         if(argument.data=="right"&flag=true){
-            msg.arguments="jarvis_left";
-            msg.command_type=2;
-         }
-         if(argument.data=="turn"&flag=true){
-             flag=false;
-            if(argument.data="left"){
-                msg.arguments="jarvis_turn_left";
-                msg.command_type=2;
-                }
-            if(argument.data=="right"){
-                msg.arguments="jarvis_turn_right";
-                msg.command_type=2;
-               }
-         }
-     }
-   pub_1.publish(msg);
-}
+    void ClassTemplate::addOne(float num)
+    {
+        info_num_ = info_num_ + num;
+    }
 
+    /****************(Alternative)
+    ClassTemplate::run()
+    {
+        ros::spinOnce();
+        loop_rate.sleep();
+        // do other stuff
+    }
+    ****************/
 
+    int main(int argc, char **argv) {
+      ros::init(argc, argv, "ClassTemplate");
+      ros::NodeHandle nh;
+      ros::Rate loop_rate(10); // 10hz
 
-void ClassTemplate::addOne(float num)
-{
-    info_num_ = info_num_ + num;
-}
+      while(ros::Time::isValid()==0)
+      {
+        ros::Duration(0.5).sleep();
+        ROS_WARN("WAITING FOR TIME TO BECOME VALID");
+      }
 
-/****************(Alternative)
-ClassTemplate::run()
-{
-    ros::spinOnce();
-    loop_rate.sleep();
-    // do other stuff
-}
-****************/
+      ClassTemplate m(nh);
+    //  ClassTemplate m2(nh);
 
-int main(int argc, char **argv) {
-  ros::init(argc, argv, "ClassTemplate");
-  ros::NodeHandle nh;
-  ros::Rate loop_rate(10); // 10hz
-  
-  while(ros::Time::isValid()==0)
-  {
-    ros::Duration(0.5).sleep();
-    ROS_WARN("WAITING FOR TIME TO BECOME VALID");
-  }
-  
-  ClassTemplate m(nh);
-//  ClssTemplate m2(nh);
-  
-  while(ros::ok())
-  {
-    ros::spinOnce();
-    loop_rate.sleep();
-    // Alternative zu spinOnce und loop_rate.sleep
-    // definiere eine "run()"-Funktion
-    // m.run()
-  }
+      while(ros::ok())
+      {
+        ros::spinOnce();
+        loop_rate.sleep();
+        // Alternative zu spinOnce und loop_rate.sleep
+        // definiere eine "run()"-Funktion
+        // m.run()
+      }
 
 
-  return 0;
-}
+      return 0;
+    }

@@ -54,11 +54,12 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
+#add_message_files(
+#FILES
+#Command.msg
 #   Message1.msg
 #   Message2.msg
-# )
+#)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -114,6 +115,8 @@ catkin_package(
 #  LIBRARIES speech_navigation
 #  CATKIN_DEPENDS geometry_msgs message_generation message_runtime roscpp rospy std_msgs std_srvs tf
 #  DEPENDS system_lib
+ #CATKIN_DEPENDS message_runtime
+
 )
 
 ###########
@@ -166,3 +169,4 @@ add_dependencies(class_template_gao ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin
 #add_executable(class_template_jessica src/class_template_jessica.cpp src/class_template_jessica.h)
 #target_link_libraries(class_template_jessica ${catkin_LIBRARIES})
 #add_dependencies(class_template_jessica ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
