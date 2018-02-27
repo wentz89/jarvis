@@ -2,32 +2,32 @@
 #include "class_template_gao.h"
 #include <ros/ros.h>
 #include<std_msgs/String.h>
-#include<jarvis_msgs/command.msg>
+#include<jarvis_msgs/Command.h>
 
 //Deconstructor
 ClassTemplate::~ClassTemplate()
-{
+{Untitled Document 2
 }
 
 ClassTemplate::ClassTemplate(ros::NodeHandle &nh):n_(&nh)
 {
-    ROS_INFO("ClassTemplate loading Publisher");
+   // ROS_INFO("ClassTemplate loading Publisher");
 
     //Publisher
     pub_ = n_->advertise<std_msgs::String>("/jarvis/command", 1);//std_msgs/Float32.h in header included
 
     //Subscriber
-    ROS_INFO("ClassTemplate loading Subscriber");
+   // ROS_INFO("ClassTemplate loading Subscriber");
     sub_ = n_->subscribe<std_msgs::String>("/command",10, &ClassTemplate::SubCallback, this);
 
     //ServiceServer
-    ROS_INFO("ClassTemplate loading service");
+   // ROS_INFO("ClassTemplate loading service");
     service_ = n_->advertiseService<std_srvs::Empty::Request, std_srvs::Empty::Response>("/template/Service", boost::bind(&ClassTemplate::ServiceCallback, this,_1,_2));//_1,_2 bedeutet zwei Argumente an ServiceCallback (wird von boost::bind benötigt)
     //std_srvs/Empty.h in header included
 
     //Timer
-    ROS_INFO("ClassTemplate loading timer");
-    timer_ = n_->createTimer(ros::Duration(2.0), &ClassTemplate::timerCallback, this);
+   // ROS_INFO("ClassTemplate loading timer");
+   timer_ = n_->createTimer(ros::Duration(0.1), &ClassTemplate::timerCallback, this);
     // triggert je 2 sekunden
     
     // other tStuff
@@ -38,8 +38,8 @@ ClassTemplate::ClassTemplate(ros::NodeHandle &nh):n_(&nh)
 
 void ClassTemplate::timerCallback(const ros::TimerEvent& e)
 {
-    ROS_INFO("Current Info Number: %f",info_num_);
-    enabled_ = false;
+    ROS_INFO("you are to slow");
+    flag= false;
 }
 
 bool ClassTemplate::ServiceCallback(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res)
@@ -54,33 +54,15 @@ bool ClassTemplate::ServiceCallback(std_srvs::Empty::Request &req, std_srvs::Emp
 
 void ClassTemplate::SubCallback(std_msgs::String datas)
 {
-      jarvis_msgs::arguments argument;
-      jarvis_msgs::comannd_type type;
-      argument.arguments==datas.data;
+      std_msgs::String argument;
+      argument=datas;
+      jarvis_msgs::Command msg;
       flag=false;
-     if(argument.arguments="jarvis"){
-        
-         ClassTemplate.timer_=n_->createTimer(ros::Duration(4), SubCallback);
-         if(argument.arguments=="forward"){
-            argument.arguments="jarvis_forward";
-         }
-         if(arguments.arguments=="left"&flag=false){
-         argument.arguments="jarvis_left";
-         }
-         if(argument.arguments=="right"&flag=false){
-         argument.arguments="jarvis_left";
-         }
-         if(argument.arguments=="turn"&flag=false){
-             flag=true;
-            if(argument.arguments="left"){
-                argument.arguments="jarvis_turn_left";
-                }
-            if(argument.arguments=="right"){
-               argument.arguments="jarvis_turn_right";
-               }
+   timer_=n_->createTimer(ros::Duration(4), timerCallback);
+     
          }
      }
-   pub_1.publish(cmd);
+   pub_1.publish(msg);
 }
 
 
@@ -111,7 +93,6 @@ int main(int argc, char **argv) {
   }
   
   ClassTemplate m(nh);
-  flag=false;
 //  ClssTemplate m2(nh);
   
   while(ros::ok())
@@ -126,3 +107,4 @@ int main(int argc, char **argv) {
 
   return 0;
 }
+

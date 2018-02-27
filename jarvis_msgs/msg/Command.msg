@@ -6,5 +6,5 @@ uint8 BOOL           = 3
 uint8 TRANSPORTATION = 4 # for later
 uint8 ANSWER         = 5 # for later -> yes or no 
 
-std_msgs/UInt16 command_type
-std_msgs/String[] arguments
+uint16 command_type
+string[] arguments

@@ -15,9 +15,9 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   std_srvs
+  jarvis_msgs
   tf
   roslib
-  jarvis_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -54,11 +54,12 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
+#add_message_files(
+#FILES
+#Command.msg
 #   Message1.msg
 #   Message2.msg
-# )
+#)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -114,6 +115,8 @@ catkin_package(
 #  LIBRARIES speech_navigation
 #  CATKIN_DEPENDS geometry_msgs message_generation message_runtime roscpp rospy std_msgs std_srvs tf
 #  DEPENDS system_lib
+ #CATKIN_DEPENDS message_runtime
+
 )
 
 ###########
@@ -146,9 +149,9 @@ add_executable(oliver_node src/test_oliver.cpp)
 target_link_libraries(oliver_node ${catkin_LIBRARIES})
 add_dependencies(oliver_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-add_executable(class_template_node src/class_template.cpp src/class_template.h)
-target_link_libraries(class_template_node ${catkin_LIBRARIES})
-add_dependencies(class_template_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#add_executable(class_template_node src/class_template.cpp src/class_template_gao.h)
+#target_link_libraries(class_template_node ${catkin_LIBRARIES})
+#add_dependencies(class_template_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 
 add_executable(class_example_node src/class_example.cpp src/class_example.h)
@@ -159,6 +162,11 @@ add_executable(class_template_oliver src/class_template_oliver.cpp src/class_tem
 target_link_libraries(class_template_oliver ${catkin_LIBRARIES})
 add_dependencies(class_template_oliver ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
+add_executable(class_template_gao src/class_template_gao.cpp src/class_template.h)
+target_link_libraries(class_template_gao ${catkin_LIBRARIES})
+add_dependencies(class_template_gao ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
 #add_executable(class_template_jessica src/class_template_jessica.cpp src/class_template_jessica.h)
 #target_link_libraries(class_template_jessica ${catkin_LIBRARIES})
 #add_dependencies(class_template_jessica ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
