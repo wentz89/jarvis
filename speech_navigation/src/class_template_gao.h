@@ -36,7 +36,10 @@
       
       //Class Variables
       float                                 info_num_;
-      bool                                  enabled_;
+      bool                                  enabled_=false;
+      bool                                  msg_recived;
+      bool                                  turn;
+      bool                                  time_point=false;
       std::string                           command_;
 
       //ROS Stuff
@@ -45,6 +48,8 @@
       ros::ServiceServer                    service_;
       ros::Subscriber                       sub_;
       ros::Timer                            timer_;
+      ros::Time                             current_time,current_time2;
+
       
   };// Class End
 #endif
