@@ -43,6 +43,7 @@
       ros::ServiceServer                    service_;
       ros::Subscriber                       sub_;
       ros::Timer                            timer_;
+
       
   };// Class End
 #endif
