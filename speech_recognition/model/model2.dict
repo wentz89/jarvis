@@ -1,0 +1,67 @@
+axis AE1 K S AH0 S
+back B AE K
+bearing B EH1 R IH0 NG
+black B L AE1 K
+box B AA1 K S
+distance D IH1 S T AH0 N S
+distancetube D IH1 S T AH0 N S T UW1 B
+drive D R AY1 V
+eighteen(2) EY1 T IY1 N
+eighteen EY0 T IY1 N
+eight EY1 T
+eleven(2) IY1 L EH0 V AH0 N
+eleven IH0 L EH1 V AH0 N
+fifteen(2) F IH1 F T IY1 N
+fifteen F IH0 F T IY1 N
+five F AY1 V
+forward F AO R W ER D
+four F AO1 R
+fourteen(2) F AO2 R T IY1 N
+fourteen F AO1 R T IY1 N
+grey G R EY1
+jarvis JH AA R V AH S
+jarvis JH AA R V IH S
+large L AA1 R JH
+left L EH F T
+location L OW0 K EY1 SH AH0 N
+lock L AA K
+mapping M AE1 P IH0 NG
+navigate N AE1 V AH0 G EY2 T
+navigation(2) N AE2 V AH0 G EY1 SH AH0 N
+navigation N AE1 V AH0 G EY1 SH AH0 N
+nine N AY1 N
+nineteen N AY1 N T IY1 N
+no N OW1
+nut N AH1 T
+one W AH1 N
+pickup(2) P IH2 K AH1 P
+pickup P IH1 K AH1 P
+point P OY1 N T
+profile P R OW1 F AY2 L
+putdown P UH1 T D AW2 N
+right R AY T
+save S EY1 V
+seven S EH1 V AH0 N
+seventeen S EH1 V AH0 N T IY1 N
+six S IH1 K S
+sixteen(2) S IH1 K S T IY1 N
+sixteen S IH0 K S T IY1 N
+small S M AO1 L
+start S T AA1 R T
+station S T EY2 SH AH0 N
+stop S T AA P
+ten T EH1 N
+thirteen TH ER1 T IY1 N
+three TH R IY1
+tube T UW1 B
+turn T ER N
+twelve T W EH1 L V
+twenty(2) T W EH1 N IY0
+twenty T W EH1 N T IY0
+two T UW1
+unlock AH N L AA K
+waypoint W EY2 P OY1 N T
+way W EY2
+workstation W ER1 K S T EY2 SH AH0 N
+work W ER1 K
+yes Y EH1 S

@@ -30,7 +30,8 @@ class Voice_Controller_EDS:
         #config.set_string('-lm', path.join(MODELDIR, 'en-us/en-us.lm.bin'))
         config.set_string('-lm', '/usr/local/share/pocketsphinx/model/en-us/en-us.lm.bin')
         #config.set_string('-dict', path.join(MODELDIR, 'en-us/cmudict-en-us.dict'))
-        config.set_string('-dict', '/home/kinetic/catkin_ws/src/jarvis/speech_recognition/model/model.dict')
+        #config.set_string('-dict', '/usr/local/share/pocketsphinx/model/en-us/cmudict-en-us.dict')
+        config.set_string('-dict', '/home/alex/wentz_catkin_ws/src/jarvis/speech_recognition/model/model2.dict')
 
         config.set_string('-logfn', '/dev/null')
         # Decode streaming data.
@@ -42,14 +43,14 @@ class Voice_Controller_EDS:
         self.decoder.start_utt()
 
         bUseMic = True
-        fpb = 2048*2
+        fpb = 4096*2
 
-        self.bPrintAll = False
+        self.bPrintAll = True
 
         if(bUseMic):
 
             p = pyaudio.PyAudio()
-            self.stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input_device_index=10, input=True, frames_per_buffer=fpb)
+            self.stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input_device_index=7, input=True, frames_per_buffer=fpb)
 
         #load recorded file
         else:
@@ -84,34 +85,35 @@ class Voice_Controller_EDS:
                     word = words[-2]
 
             if word !='</s>':
-                print ( word)
+                print (word)
 
-                if word =="back":
-                   self.pub_.publish("back")
+            self.pub_.publish(word)
+#                if word =="back":
+#                   self.pub_.publish("back")
 
-                elif word =="forward":
-                    self.pub_.publish("forward")
+#                elif word =="forward":
+#                    self.pub_.publish("forward")
 
-                elif word =="left":
-                    self.pub_.publish("left")
+#                elif word =="left":
+#                    self.pub_.publish("left")
 
-                elif word =="right":
-                    self.pub_.publish("right")
+#                elif word =="right":
+#                    self.pub_.publish("right")
 
-                elif word =="stop":
-                    self.pub_.publish("stop")
+#                elif word =="stop":
+#                    self.pub_.publish("stop")
 
-                elif word =="turn":
-                    self.pub_.publish("turn")
+#                elif word =="turn":
+#                    self.pub_.publish("turn")
 
-                elif word =="lock":
-                    self.pub_.publish("lock")
+#                elif word =="lock":
+#                    self.pub_.publish("lock")
 
-                elif word =="unlock":
-                    self.pub_.publish("unlock")
+#                elif word =="unlock":
+#                    self.pub_.publish("unlock")
 
-                elif word =="jarvis":
-                    self.pub_.publish("jarvis")
+#                elif word =="jarvis":
+#                    self.pub_.publish("jarvis")
 
             self.decoder.end_utt()
             self.decoder.start_utt()
