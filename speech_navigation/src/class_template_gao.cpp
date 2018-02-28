@@ -30,7 +30,7 @@ ClassTemplate::ClassTemplate(ros::NodeHandle &nh):n_(&nh)
     //Timer
     ROS_INFO("ClassTemplate loading timer");
 
-    timer_ = n_->createTimer(ros::Duration(0.1), &ClassTemplate::timerCallback, this);
+    timer_ = n_->createTimer(ros::Duration(1), &ClassTemplate::timerCallback, this);
     // triggert je 2 sekunden/ROS_INFO("Current Info Number: %f",info_num_);
     //enabled_ = false;
 
@@ -49,29 +49,31 @@ void ClassTemplate::timerCallback(const ros::TimerEvent& e)
 {
     //enabled_ = false;
     jarvis_msgs::Command msg;
+    std::vector<std::string> args;
     ros::Duration  four_sec(4.0);
     if(time_point==false){
-        current_time=ros::Time::now();
+    current_time=ros::Time::now();
     }
      if(ros::Time::now()-current_time>four_sec){
-
-     //msg.arguments[4]={"you""are""too""slow"};
-     ROS_INFO("you are to slow");
-     enabled_=false;
-     msg_recived=false;
-     turn=false;
-     current_time=ros::Time::now();
-     time_point=false;
+       args.push_back("you " "are " "too " "slow");
+       msg.arguments = args;
+       enabled_=false;
+       msg_recived=false;
+       turn=false;
+       current_time=ros::Time::now();
+       time_point=false;
     }
     if(enabled_==true){
         if(command_=="stop"){
             ROS_INFO("stop");
-      //msg.arguments[1]={"stop"};
+        args.push_back("stop");
+        msg.arguments = args;
         enabled_=false;
         turn=false;
         msg_recived=false;
+        current_time=ros::Time::now();
+        time_point=false;
         }
-
        if(command_=="jarvis"){
         ROS_INFO("jarivs");
         msg_recived=true;
@@ -80,53 +82,71 @@ void ClassTemplate::timerCallback(const ros::TimerEvent& e)
        }
 
     if(msg_recived){
-
-         if(turn==false){
-         if(command_ =="forward"){
-        //   msg.arguments[1]={"forward"};
-            ROS_INFO("forward");
+//========================simple message=======================//
+         if(turn==false){          
+            if(command_ =="forward"){
+            args.push_back("forward");
+            msg.arguments=args;
             msg.command_type=2;
             enabled_ =false;
             msg_recived=false;
-
+            current_time=ros::Time::now();
                  }
                  if(command_ =="left"){
-                  //  msg.arguments[1]={"left"};
+                    args.push_back("left");
+                    msg.arguments = args;
                     msg.command_type=2;
                     enabled_ =false;
                     msg_recived=false;
+                    current_time=ros::Time::now();
+                    time_point=false;
+
                  }
 
-                }
                  if(command_ =="right"){
-
-                   // msg.arguments[2]={"jarvis""left"};
-                    msg.command_type=2;
-                    enabled_ =false;
-                    msg_recived=false;
-
+                     args.push_back("right");
+                     msg.arguments = args;
+                     msg.command_type=2;
+                     enabled_ =false;
+                     msg_recived=false;
+                     current_time=ros::Time::now();
+                     time_point=false;
                  }
+         }
                  if(command_ =="turn"){
                      turn=true;
+                      ROS_INFO("turn");
+                 }
+                    if(turn==true){
                     if(command_ =="left"){
-                        //msg.arguments[3]={"jarvis""turn""left"};
+                        turn=false;
+                        ROS_INFO("left");
+                        args.push_back("turn""left");
+                        msg.arguments = args;
                         msg.command_type=2;
                         enabled_ =false;
-                        turn=false;
                         msg_recived=false;
-
+                        current_time=ros::Time::now();
+                        time_point=false;
                         }
                     if(command_ =="right"){
-                        //msg.arguments[3]={"jarvis""turn""right"};
-                        msg.command_type=2;
-                        enabled_ =false;
                         turn=false;
+                        ROS_INFO("right");
+                        args.push_back("turn""right");
+                        msg.arguments = args;
+                        msg.command_type=2;
+                        enabled_ =false;                      
                         msg_recived=false;
+                        current_time=ros::Time::now();
+                        time_point=false;
+
                        }
-                 }
+                    }
+
     }
 
     }
+
 pub_.publish(msg);
 
 }
