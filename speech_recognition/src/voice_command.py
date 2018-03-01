@@ -50,7 +50,7 @@ class Voice_Controller_EDS:
         if(bUseMic):
 
             p = pyaudio.PyAudio()
-            self.stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input_device_index=7, input=True, frames_per_buffer=fpb)
+            self.stream = p.open(format=pyaudio.paInt16, channels=1, rate=8000, input_device_index=7, input=True, frames_per_buffer=fpb)
 
         #load recorded file
         else:
