@@ -31,7 +31,9 @@ class Voice_Controller_EDS:
         config.set_string('-lm', '/usr/local/share/pocketsphinx/model/en-us/en-us.lm.bin')
         #config.set_string('-dict', path.join(MODELDIR, 'en-us/cmudict-en-us.dict'))
         #config.set_string('-dict', '/usr/local/share/pocketsphinx/model/en-us/cmudict-en-us.dict')
-        config.set_string('-dict', '/home/alex/wentz_catkin_ws/src/jarvis/speech_recognition/model/model2.dict')
+        #config.set_string('-dict', '/home/alex/wentz_catkin_ws/src/jarvis/speech_recognition/model/model2.dict')
+        model_path = path.abspath(__file__)
+        config.set_string('-dict', model_path.replace('src/voice_command.py','model/model2.dict')) #general path
 
         config.set_string('-logfn', '/dev/null')
         # Decode streaming data.
@@ -51,6 +53,7 @@ class Voice_Controller_EDS:
 
             p = pyaudio.PyAudio()
             self.stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input_device_index=7, input=True, frames_per_buffer=fpb)
+            #self.stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input_device_index=12, input=True, frames_per_buffer=fpb) #olivers standard mic_index
 
         #load recorded file
         else:
