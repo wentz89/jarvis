@@ -38,7 +38,7 @@ class PythonExample:
                 elif self.command == "lock":
                     self.locked = True
 
-                # === simple === #
+                # === SIMPLE === #
             simple_msg = Command()
             simple_msg.command_type = 2
 
@@ -77,6 +77,16 @@ class PythonExample:
 
                 if not self.enable:
                     self.pub.publish(simple_msg)  #publish simple_msgs
+
+                # === MANIPULATION === #
+            manipulation_msg = Command()
+            manipulation_msg.command_type = 1
+                
+            if self.enable:
+               #commands
+
+                if not self.enable:
+                    self.pub.publish(manipulation_msg)
 
         self.command_recived = False
 
